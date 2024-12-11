@@ -1,0 +1,52 @@
+@startuml
+
+actor "Клиент" as client
+participant "MES" as mes
+database "redis-db" as redis
+database "postgres-db" as pg
+
+== Получение списка заказов на производство ==
+client -> mes: GET /orders\nПолучение списка заказов
+activate mes
+
+mes -> redis: Запрос списка заказов
+activate redis
+redis --> mes: Список заказов
+deactivate redis
+mes --> client: Список заказов
+
+loop 1 раз в день
+mes -> mes: Формирование списка заказов на день
+
+mes -> redis: Запись списка в кэш
+deactivate mes
+end
+
+== Обновление статуса заказа ==
+client -> mes: PATCH /orders/{uuid}/status\nОбновление статуса заказа
+activate mes
+
+mes -> pg: Обновление статуса заказа
+activate pg
+pg --> mes: Статус заказа
+deactivate pg
+mes -> redis: Обновление статуса заказа в кэше
+mes --> client: Статус заказа
+deactivate mes
+
+== Получение списка украшений для заказа ==
+client -> mes: GET /items\nПолучение списка украшений для заказа
+activate mes
+
+mes -> redis: Запрос списка украшений
+activate redis
+redis --> mes: Список украшений
+deactivate redis
+mes --> client: Список украшений
+
+alt Список товаров изменился
+mes -> redis: Запись списка в кэш
+end
+
+
+@enduml
