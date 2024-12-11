@@ -6,7 +6,7 @@
 
 Необходимо даже при стабильной работе системы следить за ее состоянием
 
-Плюс можно будет получить какую то неожиданную информацию о работе системы
+Плюс можно будет получить какую то неожиданную информацию о работе системы, принимать те или иные решения по продукту
 
 ### Выбор подхода к мониторингу
 
@@ -30,6 +30,12 @@
 - Number of requests (RPS) for CRM API
 - Number of requests (RPS) for MES API
 
+отслеживаем количество активных пользователей в день + количество одновременных юзеров
+- Number of DAU for internet shop API
+- Number of DAU for MES API
+- Number of concurrent users for internet shop API
+- Number of concurrent users for MES API
+
 Следим за загрузкой ЦП
 - CPU % for shop API
 - CPU % for CRM API
@@ -48,6 +54,12 @@
 Размер S3 хранилища должен быть заранее посчитан с запасом, но хорошо бы узнать, когда он начнет забиваться объектами
 - Size of S3 storage
 
+Метрики БД
+- Size of shop db instance
+- Size of MES db instance
+- Number of connections for shop db instance
+- Number of connections for MES db instance
+
 Следим за числом критических ошибок, в идеале не должно их быть
 - Number of HTTP 500 for shop API
 - Number of HTTP 500 for CRM API
@@ -56,5 +68,9 @@
 Более детальные метрики планируется добавлять по мере необходимости
 
 
-### План действий
-
+### План действий для настройки мониторинга
+- Установка Prometheus
+- Доработка кода сервисов для работы с метриками
+- Установка Grafana
+- Настроить дашборды
+- Настроить алерты

@@ -22,7 +22,19 @@ mes -> redis: Запись списка в кэш
 deactivate mes
 end
 
-== Получение списка писка украшений для заказа ==
+== Обновление статуса заказа ==
+client -> mes: PATCH /orders/{uuid}/status\nОбновление статуса заказа
+activate mes
+
+mes -> pg: Обновление статуса заказа
+activate pg
+pg --> mes: Статус заказа
+deactivate pg
+mes -> redis: Обновление статуса заказа в кэше
+mes --> client: Статус заказа
+deactivate mes
+
+== Получение списка украшений для заказа ==
 client -> mes: GET /items\nПолучение списка украшений для заказа
 activate mes
 
